@@ -14,16 +14,46 @@
       console.log("The read operation failed: " + errorObject.code);
     });
 
+    // API Key: AdPlL1v8nRQSF6poQO8nyz
+    // {"url":
+    // "https://www.filepicker.io/api/file/3wnXBnC9Qr6tEcWP5dWt",
+    // "filename":"Pierre_LeGrand.jpg",
+    // "mimetype":"image/jpeg",
+    // "size":168177,
+    // "isWriteable":true}
+
+    var imageUpped;
+
+    $scope.addImage = function(new_image) {
+      filepicker.setKey("AdPlL1v8nRQSF6poQO8nyz");
+
+      filepicker.pick(
+      {
+        mimetypes: ['image/*', 'text/plain'],
+        container: 'window',
+        services:['COMPUTER'],
+      },
+      function(Blob){
+        // console.log(JSON.stringify(Blob));
+        imageUpped = Blob.url; // grabs image url
+        console.log(imageUpped);
+      },
+      function(FPError){
+        console.log(FPError.toString());
+      }
+      );
+    }
+
+
     $scope.addPortfolio = function(new_portfolio) {
       var pushRef = new Firebase(FIREBASE_URL + '/portfolios'); // points to space for new portfolio
 
       pushRef.push({
         name: new_portfolio.name,
         creationDate: Firebase.ServerValue.TIMESTAMP,
-        date: new_portfolio.date,
         title: new_portfolio.title,
         description: new_portfolio.description,
-        image: new_portfolio.image
+        imageurl: imageUpped
       });
     };
 
